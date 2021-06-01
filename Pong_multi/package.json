@@ -1,0 +1,16 @@
+{
+  "name": "Pong_multi",
+  "version": "0.0.0",
+  "description": "Juste un test pour apprendre le back",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node main.js"
+  },
+  "keywords": [],
+  "author": "Com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^3.1.1"
+  }
+}

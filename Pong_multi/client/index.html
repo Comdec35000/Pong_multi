@@ -1,0 +1,102 @@
+<div>
+  PONG
+</div>
+<div>
+  <canvas id="main" width="600" height="400"></canvas>
+</div>
+
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+  const socket = io();
+
+  const canvas = document.getElementById('main');
+  const ctx = canvas.getContext('2d');
+
+  socket.on('gameFull', () => {
+    console.log("the game is currently full");
+  })
+
+  socket.on('newPos', function(data) {
+    ctx.clearRect(0, 0, 600, 400);
+    for (var i = 0 in data) {
+      var y = data[0][i].y;
+      var x = 325;
+
+      if(data[0][i].playerTag==0) {
+        ctx.fillStyle = '#df162a'
+        x = 10;
+      } else if(data[0][i].playerTag==1) {
+        ctx.fillStyle = '#165edf'
+        x = 560;
+      }
+        ctx.fillRect(x, y, 30, 120);
+      }
+
+      ctx.fillStyle = '#fff799';
+      ctx.fillRect(data[1].x, data[1].y, 20, 20);
+      ctx.font = '30px Helvetica'
+      ctx.fillText(data[0][0].score, 270, 30);
+      ctx.fillText(data[0][1].score, 330, 30);
+    });
+
+    document.onkeydown = event => {
+      switch (event.keyCode) {
+        case 83: //down
+            socket.emit('keyPress', {
+              inputID : 'up',
+              state : true
+            });
+          break;
+        case 90: //up
+        socket.emit('keyPress', {
+          inputID : 'down',
+          state : true
+        });
+          break;
+        default:
+          break;
+      }
+    }
+
+    document.onkeyup = event => {
+      switch (event.keyCode) {
+        case 83: //down
+            socket.emit('keyPress', {
+              inputID : 'up',
+              state : false
+            });
+          break;
+        case 90: //up
+          socket.emit('keyPress', {
+              inputID : 'down',
+              state : false
+            });
+          break;
+        default:
+          break;
+      }
+    }
+
+</script>
+<style media="screen" type="text/css">
+  html {
+    background-color : #333;
+  }
+  canvas{
+    background-color: #222;
+    display : block;
+    margin : 0 auto;
+    border : 2px solid;
+  }
+  div{
+    background-color : #222;
+    padding : 20px;
+    border-radius : 20px;
+    color : #fff;
+    font-family : Helvetica;
+    text-align : center;
+    font-size : 40px;
+    font-variant : bold;
+  }
+</style>
